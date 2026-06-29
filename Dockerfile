@@ -1,19 +1,19 @@
-# --- Giai đoạn 1: Build ứng dụng ---
-FROM maven:3.8.8-eclipse-temurin-11 AS build
+# --- Giai đoạn 1: Build ứng dụng (Nâng cấp lên Java 17) ---
+FROM maven:3.8.8-eclipse-temurin-17 AS build
 WORKDIR /app
 
 # Copy file cấu hình Maven trước
 COPY pom.xml .
 
-# Ép Maven tải trước toàn bộ dependency về (loại bỏ go-offline tránh lỗi cache lỗi)
+# Ép Maven tải trước toàn bộ dependency về
 RUN mvn dependency:resolve
 
 # Copy toàn bộ mã nguồn vào và build ra file WAR
 COPY src ./src
 RUN mvn clean package -DskipTests
 
-# --- Giai đoạn 2: Khởi chạy ứng dụng ---
-FROM tomcat:10.1-jdk11-temurin-jammy
+# --- Giai đoạn 2: Khởi chạy ứng dụng với Tomcat hỗ trợ Java 17 ---
+FROM tomcat:10.1-jdk17-temurin-jammy
 WORKDIR /usr/local/tomcat
 
 # Xóa các ứng dụng mặc định của Tomcat
