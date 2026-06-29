@@ -20,7 +20,7 @@ WORKDIR /usr/local/tomcat
 RUN rm -rf webapps/*
 
 # Copy file WAR đã được build thành công
-COPY --from=build /app/target/DoAnCuoiKi-1.0-SNAPSHOT.war webapps/ROOT.war
+COPY --from=build /app/target/*.war webapps/ROOT.war
 
 EXPOSE 8080
 
